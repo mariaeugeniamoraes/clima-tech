@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClimaTech</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background:
+            linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
+
+            overflow: hidden;
+        }
+
+        .background {
+            position: absolute;
+
+            width: 500px;
+            height: 500px;
+
+            background: #7c3aed;
+
+            border-radius: 50%;
+
+            filter: blur(120px);
+
+            opacity: 0.4;
+
+            top: -100px;
+            left: -100px;
+        }
+
+        .background2 {
+            position: absolute;
+
+            width: 400px;
+            height: 400px;
+
+            background: #06b6d4;
+
+            border-radius: 50%;
+
+            filter: blur(120px);
+
+            opacity: 0.4;
+
+            bottom: -100px;
+            right: -100px;
+        }
+
+        .container {
+            position: relative;
+
+            width: 90%;
+            max-width: 430px;
+
+            padding: 35px;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,0.08);
+
+            backdrop-filter: blur(20px);
+
+            border: 1px solid rgba(255,255,255,0.1);
+
+            color: white;
+
+            box-shadow: 0 0 40px rgba(0,0,0,0.4);
+
+            animation: aparecer 1s ease;
+        }
+
+        h1 {
+            text-align: center;
+
+            font-size: 42px;
+
+            margin-bottom: 25px;
+
+            color: #c084fc;
+
+            animation: glow 2s infinite alternate;
+        }
+
+        .search-box {
+            display: flex;
+
+            gap: 10px;
+
+            margin-bottom: 30px;
+        }
+
+        input {
+            flex: 1;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 15px;
+
+            background: rgba(255,255,255,0.1);
+
+            color: white;
+
+            outline: none;
+
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: #ddd;
+        }
+
+        button {
+            border: none;
+
+            padding: 15px 20px;
+
+            border-radius: 15px;
+
+            background: linear-gradient(45deg, #8b5cf6, #06b6d4);
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.08);
+
+            box-shadow: 0 0 20px #8b5cf6;
+        }
+
+        .weather-box {
+            text-align: center;
+
+            animation: aparecer 0.8s ease;
+        }
+
+        .cidade {
+            font-size: 34px;
+
+            margin-bottom: 10px;
+        }
+
+        .icone {
+            width: 130px;
+
+            animation: flutuar 3s infinite ease-in-out;
+        }
+
+        .temperatura {
+            font-size: 65px;
+
+            font-weight: bold;
+
+            margin: 10px 0;
+        }
+
+        .descricao {
+            font-size: 22px;
+
+            opacity: 0.8;
+
+            text-transform: capitalize;
+
+            margin-bottom: 25px;
+        }
+
+        .cards {
+            display: flex;
+
+            gap: 15px;
+        }
+
+        .card {
+            flex: 1;
+
+            padding: 20px;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,0.08);
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+
+            background: rgba(255,255,255,0.15);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+
+            color: #c084fc;
+        }
+
+        @keyframes aparecer {
+
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+
+            from {
+                text-shadow: 0 0 10px #8b5cf6;
+            }
+
+            to {
+                text-shadow: 0 0 30px #06b6d4;
+            }
+        }
+
+        @keyframes flutuar {
+
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="background"></div>
+    <div class="background2"></div>
+
+    <div class="container">
+
+        <h1>ClimaTech</h1>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="cidadeInput"
+                placeholder="Digite uma cidade..."
+            >
+
+            <button onclick="buscarClima()">
+                Buscar
+            </button>
+
+        </div>
+
+        <div id="weatherBox" class="weather-box">
+
+            <p>Pesquise uma cidade 🌎</p>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const apiKey = "29bd37225ebcfec8e008e5797a5def82";
+
+        async function buscarClima() {
+
+            const cidade =
+                document.getElementById("cidadeInput").value;
+
+            const weatherBox =
+                document.getElementById("weatherBox");
+
+            if (cidade === "") {
+
+                alert("Digite uma cidade!");
+
+                return;
+            }
+
+            const url =
+            `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&units=metric&lang=pt_br`;
+
+            try {
+
+                const resposta = await fetch(url);
+
+                const dados = await resposta.json();
+
+                if (dados.cod == "404") {
+
+                    weatherBox.innerHTML =
+                    `<p>Cidade não encontrada 😢</p>`;
+
+                    return;
+                }
+
+                weatherBox.innerHTML = `
+
+                    <h2 class="cidade">
+                        ${dados.name}
+                    </h2>
+
+                    <img
+                        class="icone"
+                        src="https://openweathermap.org/img/wn/${dados.weather[0].icon}@4x.png"
+                    >
+
+                    <div class="temperatura">
+                        ${Math.round(dados.main.temp)}°C
+                    </div>
+
+                    <div class="descricao">
+                        ${dados.weather[0].description}
+                    </div>
+
+                    <div class="cards">
+
+                        <div class="card">
+                            <h3>💧 Umidade</h3>
+                            <p>${dados.main.humidity}%</p>
+                        </div>
+
+                        <div class="card">
+                            <h3>🌬️ Vento</h3>
+                            <p>${dados.wind.speed} km/h</p>
+                        </div>
+
+                    </div>
+                `;
+
+            } catch (erro) {
+
+                weatherBox.innerHTML =
+                `<p>Erro ao buscar clima 😢</p>`;
+            }
+        }
+
+    </script>
+
+</body>
+</html>
+```
