@@ -24,7 +24,7 @@
             align-items: center;
 
             background:
-            linear-gradient(135deg, #1e1b4b, #312e81, #0f172a);
+            linear-gradient(135deg, #4a90e2, #70a1ff, #a8c0ff);
 
             overflow: hidden;
         }
@@ -79,6 +79,8 @@
 
             backdrop-filter: blur(20px);
 
+            z-index: 2;
+
             border: 1px solid rgba(255,255,255,0.1);
 
             color: white;
@@ -95,7 +97,7 @@
 
             margin-bottom: 25px;
 
-            color: #c084fc;
+            color: #00d2ff;
 
             animation: glow 2s infinite alternate;
         }
@@ -220,6 +222,53 @@
             color: #c084fc;
         }
 
+        .nuvens-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .nuvem {
+            position: absolute;
+            opacity: 1;
+            animation: moverNuvem linear infinite;
+        }
+
+        .nuvem1 {
+            width: 280px;
+            top: 15%;
+            animation-duration: 30s;
+        }
+
+        .nuvem2 {
+            width: 180px;
+            top: 45%;
+            animation-duration: 45s;
+            animation-delay: -15s;
+
+        }
+
+        .nuvem3 {
+            width: 220px;
+            top: 65%;
+            animation-duration: 38s;
+            animation-delay: -5s;
+        }
+
+        @keyframes moverNuvem {
+            0% {
+                transform: translateX(-300px);
+            }
+            100% {
+                transform: translateX(100vw);
+            }
+        }
+
         @keyframes aparecer {
 
             from {
@@ -236,11 +285,11 @@
         @keyframes glow {
 
             from {
-                text-shadow: 0 0 10px #8b5cf6;
+                text-shadow: 0 0 10px rgba(0, 210, 255, 0.5), 0 0 20px rgba(0, 210, 255, 0.3);
             }
 
             to {
-                text-shadow: 0 0 30px #06b6d4;
+                text-shadow: 0 0 20px rgba(0, 210, 255, 1), 0 0 30px rgba(0, 114, 255, 0.8), 0 0 40px rgba(0, 114, 255, 0.6);
             }
         }
 
@@ -263,6 +312,13 @@
 
 </head>
 <body>
+
+    <div class="nuvens-container">
+        <img src="IMG_3015.PNG" class="nuvem nuvem1" alt="nuvem">
+        <img src="IMG_3015.PNG" class="nuvem nuvem2" alt="nuvem">
+        <img src="IMG_3015.PNG" class="nuvem nuvem3" alt="nuvem">
+
+    </div>
 
     <div class="background"></div>
     <div class="background2"></div>
